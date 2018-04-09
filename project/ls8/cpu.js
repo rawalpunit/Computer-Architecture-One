@@ -110,6 +110,7 @@ class CPU {
 
         // !!! IMPLEMENT ME
         this.alu(IR, operandA, operandB);
+        //I changed this...
 
         // Increment the PC register to go to the next instruction. Instructions
         // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
