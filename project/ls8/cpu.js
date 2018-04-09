@@ -56,7 +56,7 @@ class CPU {
     alu(op, regA, regB) {
         switch (op) {
             case 'MUL':
-                return regA * regB;
+                return this.reg[regA] * this.reg[regB];
                 break;
             case 'ADD':
                 return regA + regB;
@@ -96,7 +96,7 @@ class CPU {
         let IR = RAM.read(this.reg.PC);
         
         // Debugging output
-        //console.log(`${this.reg.PC}: ${IR.toString(2)}`);
+        console.log(`${this.reg.PC}: ${IR.toString(2)}`);
 
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
@@ -112,13 +112,27 @@ class CPU {
         this.alu(IR, operandA, operandB);
         //I changed this...
 
+        
         // Increment the PC register to go to the next instruction. Instructions
         // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
         // instruction byte tells you how many bytes follow the instruction byte
         // for any particular instruction.
         
         // !!! IMPLEMENT ME
+        let stringIR = IR.toString();
+        if (stringIR[0] === "0" && stringIR[1] === '1') {
+            this.reg.PC += 2;
+        } else if (stringIR[0] === "1" && stringIR[1] === '0') {
+            this.reg.PC += 3;
+        }
+
+        handleHLT() {
+            this.stopClock();
+        }
+       
     }
+
+
 }
 
 module.exports = CPU;
