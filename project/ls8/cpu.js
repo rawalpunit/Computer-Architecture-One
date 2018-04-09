@@ -1,3 +1,4 @@
+
 /**
  * LS-8 v2.0 emulator skeleton code
  */
@@ -55,7 +56,28 @@ class CPU {
     alu(op, regA, regB) {
         switch (op) {
             case 'MUL':
-                // !!! IMPLEMENT ME
+                return regA * regB;
+                break;
+            case 'ADD':
+                return regA + regB;
+                break;
+            case 'SUB':
+                return regA - regB;
+                break;
+            case 'DIV':
+                return regA / regB;
+                break;
+            // case 'INC':
+            //     return regA  regB;
+            //     break;
+            // case 'DEC':
+            //     return regA * regB;
+            //     break;
+            // case 'CMP':
+            //     return regA * regB;
+            //     break;
+            default:
+                console.log("op not found");
                 break;
         }
     }
@@ -64,13 +86,15 @@ class CPU {
      * Advances the CPU one cycle
      */
     tick() {
+        
         // Load the instruction register (IR--can just be a local variable here)
         // from the memory address pointed to by the PC. (I.e. the PC holds the
         // index into memory of the instruction that's about to be executed
         // right now.)
 
         // !!! IMPLEMENT ME
-
+        let IR = RAM.read(this.reg.PC);
+        
         // Debugging output
         //console.log(`${this.reg.PC}: ${IR.toString(2)}`);
 
@@ -78,11 +102,14 @@ class CPU {
         // needs them.
 
         // !!! IMPLEMENT ME
+        let operandA = this.ram.read(this.reg.PC + 1);
+        let operandB = this.ram.read(this.reg.PC + 2);
 
         // Execute the instruction. Perform the actions for the instruction as
         // outlined in the LS-8 spec.
 
         // !!! IMPLEMENT ME
+        this.alu(IR, operandA, operandB);
 
         // Increment the PC register to go to the next instruction. Instructions
         // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
