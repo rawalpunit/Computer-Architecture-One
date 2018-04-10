@@ -131,6 +131,22 @@ class CPU {
         break;
     }
 
+    // const handle_HLT = () => {
+    //   this.stopClock();
+    // };
+
+    // const handle_LDI = (register, value) => {
+    //   this.reg[register] = value;
+    // };
+
+    // const handle_PRN = register => {
+    //   console.log(this.reg[register]);
+    // };
+
+    // const handle_MUL = (operandA, operandB) => {
+    //   this.reg[operandA] = this.alu("MUL", operandA, operandB);
+    // };
+
     // Increment the PC register to go to the next instruction. Instructions
     // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
     // instruction byte tells you how many bytes follow the instruction byte
