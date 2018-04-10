@@ -126,9 +126,9 @@ class CPU {
             this.reg.PC += 3;
         }
 
-        handleHLT() {
+        const handleHLT = () => {
             this.stopClock();
-        }
+          }; 
        
     }
 
