@@ -30,7 +30,6 @@ class CPU {
    */
   poke(address, value) {
     this.ram.write(address, value);
-    console.log(this.ram.write(address, value));
   }
 
   /**
@@ -101,8 +100,8 @@ class CPU {
     let IR = this.ram.read(this.reg.PC);
 
     // Debugging output
-    console.log(`${this.reg.PC}: ${IR.toString(2)}`);
-    console.log("see me");
+    // console.log(`${this.reg.PC}: ${IR.toString(2)}`);
+    // console.log("see me");
 
     // Get the two bytes in memory _after_ the PC in case the instruction
     // needs them.
@@ -130,9 +129,6 @@ class CPU {
       case MUL:
         this.alu("MUL", operandA, operandB);
         break;
-      default:
-        console.log("test");
-        break;
     }
 
     // Increment the PC register to go to the next instruction. Instructions
@@ -145,7 +141,7 @@ class CPU {
     let operandCount = (IR >>> 6) & 0b11;
     let totalInstructionLength = operandCount + 1;
     this.reg.PC += totalInstructionLength;
-    console.log(this.reg);
+    // console.log(this.reg);
     // let stringIR = IR.toString();
     // if (stringIR[0] === "0" && stringIR[1] === "1") {
     //   this.reg.PC += 2;
