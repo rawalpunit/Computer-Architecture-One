@@ -131,7 +131,7 @@ class CPU {
 
     const handle_PUSH = register => {
         register = this.SP;
-        this.SP += 1;
+        this.SP -= 1;
     }
 
     const handle_ST = (regA, regB) => {
