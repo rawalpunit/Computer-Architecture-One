@@ -11,6 +11,9 @@ const HLT = 0b00000001;
 const LDI = 0b10011001;
 const PRN = 0b01000011;
 const MUL = 0b10101010;
+const POP = 0b01001100;
+const PUSH = 0b01001101;
+const ST = 0b10011010;
 
 class CPU {
   /**
@@ -23,6 +26,7 @@ class CPU {
 
     // Special-purpose registers
     this.reg.PC = 0; // Program Counter
+    let SP = 0xF4;
   }
 
   /**
@@ -99,6 +103,8 @@ class CPU {
     // !!! IMPLEMENT ME
     let IR = this.ram.read(this.reg.PC);
 
+
+
     // Debugging output
     // console.log(`${this.reg.PC}: ${IR.toString(2)}`);
     // console.log("see me");
@@ -116,6 +122,22 @@ class CPU {
     // !!! IMPLEMENT ME
     // this.alu(IR, operandA, operandB);
     //I changed this...
+    
+    // These are the fucntion handlers
+    const handle_POP = register => {
+        register = this.SP;
+        this.SP += 1;
+    }
+
+    const handle_PUSH = register => {
+        register = this.SP;
+        this.SP += 1;
+    }
+
+    const handle_ST = (regA, regB) => {
+        this.ram.write[regA] = regB;
+    }
+    
 
     switch (IR) {
       case HLT:
@@ -129,11 +151,21 @@ class CPU {
       case MUL:
         this.alu("MUL", operandA, operandB);
         break;
+      case POP:
+      handle_POP();
+        break;
+    case PUSH:
+        handle_PUSH();
+        break;
+    case ST:
+        handle_ST();
+        break;
     }
 
     // const handle_HLT = () => {
     //   this.stopClock();
     // };
+
 
     // const handle_LDI = (register, value) => {
     //   this.reg[register] = value;
