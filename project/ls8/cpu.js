@@ -125,17 +125,17 @@ class CPU {
     
     // These are the fucntion handlers
     const handle_POP = register => {
-        register = this.SP;
+        this.reg[register] = this.ram.read(this.SP);
         this.SP += 1;
     }
 
     const handle_PUSH = register => {
-        register = this.SP;
         this.SP -= 1;
+        this.ram.write(this.SP, this.reg[register]);
     }
 
     const handle_ST = (regA, regB) => {
-        this.ram.write[regA] = regB;
+        this.ram.write(this.reg[regA]) = this.reg[regB];
     }
     
 
@@ -152,13 +152,13 @@ class CPU {
         this.alu("MUL", operandA, operandB);
         break;
       case POP:
-      handle_POP();
+      handle_POP(operandA);
         break;
     case PUSH:
-        handle_PUSH();
+        handle_PUSH(operandA);
         break;
     case ST:
-        handle_ST();
+        handle_ST(operandA, operandB);
         break;
     }
 
