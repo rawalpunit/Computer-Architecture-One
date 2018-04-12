@@ -13,7 +13,11 @@ const PRN = 0b01000011;
 const MUL = 0b10101010;
 const POP = 0b01001100;
 const PUSH = 0b01001101;
-const ST = 0b10011010;
+// const ST = 0b10011010;
+// const CALL = 0b01001000;
+// const RET = 0b00001001;
+
+const SP = 7;
 
 class CPU {
   /**
@@ -26,13 +30,15 @@ class CPU {
 
     // Special-purpose registers
     this.reg.PC = 0; // Program Counter
-    let SP = 0xF4;
+    this.reg[SP] = 0xF4;
   }
 
   /**
    * Store value in memory address, useful for program loading
    */
   poke(address, value) {
+      console.log(address, value);
+
     this.ram.write(address, value);
   }
 
@@ -99,14 +105,14 @@ class CPU {
     // from the memory address pointed to by the PC. (I.e. the PC holds the
     // index into memory of the instruction that's about to be executed
     // right now.)
-
+    
     // !!! IMPLEMENT ME
     let IR = this.ram.read(this.reg.PC);
 
 
 
     // Debugging output
-    // console.log(`${this.reg.PC}: ${IR.toString(2)}`);
+    console.log(`${this.reg.PC}: ${IR.toString(2)}`);
     // console.log("see me");
 
     // Get the two bytes in memory _after_ the PC in case the instruction
@@ -121,23 +127,31 @@ class CPU {
 
     // !!! IMPLEMENT ME
     // this.alu(IR, operandA, operandB);
-    //I changed this...
+    let advancePC = true;
     
     // These are the fucntion handlers
     const handle_POP = register => {
-        this.reg[register] = this.ram.read(this.SP);
-        this.SP += 1;
+        this.reg[register] = this.ram.read(this.reg[SP]);
+        this.reg[SP]++;
     }
 
     const handle_PUSH = register => {
-        this.SP -= 1;
-        this.ram.write(this.SP, this.reg[register]);
+        this.reg[SP]--;
+        this.ram.write(this.reg[SP], this.reg[register]);
     }
 
-    const handle_ST = (regA, regB) => {
-        this.ram.write(this.reg[regA]) = this.reg[regB];
-    }
+    // const handle_ST = (regA, regB) => {
+    //     this.ram.write(this.reg[regA]) = this.reg[regB];
+    // }
+
+    // const handle_CALL = register => {
+    //     handle_PUSH(this.ram.read(this.reg[this.reg.PC+2]));
+    //     this.reg.PC = this.reg[register];
+    // }
     
+    // const handle_RET = () => {
+    //     this.reg.PC = this.ram.read(this.SP);
+    // }
 
     switch (IR) {
       case HLT:
@@ -157,9 +171,16 @@ class CPU {
     case PUSH:
         handle_PUSH(operandA);
         break;
-    case ST:
-        handle_ST(operandA, operandB);
-        break;
+    // case ST:
+    //     handle_ST(operandA, operandB);
+    //     break;
+    // case CALL:
+    //     advancePC = false;
+    //     handle_CALL(operandA);
+    //     break;
+    default:
+        console.log('invalid instruction: ', IR);
+        this.stopClock();
     }
 
     // const handle_HLT = () => {
@@ -186,9 +207,11 @@ class CPU {
 
     // !!! IMPLEMENT ME
 
+    if (advancePC) {
     let operandCount = (IR >>> 6) & 0b11;
     let totalInstructionLength = operandCount + 1;
     this.reg.PC += totalInstructionLength;
+    } 
     // console.log(this.reg);
     // let stringIR = IR.toString();
     // if (stringIR[0] === "0" && stringIR[1] === "1") {
