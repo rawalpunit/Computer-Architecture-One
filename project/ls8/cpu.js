@@ -14,8 +14,8 @@ const MUL = 0b10101010;
 const POP = 0b01001100;
 const PUSH = 0b01001101;
 // const ST = 0b10011010;
-// const CALL = 0b01001000;
-// const RET = 0b00001001;
+const CALL = 0b01001000;
+const RET = 0b00001001;
 
 const SP = 7;
 
@@ -37,7 +37,7 @@ class CPU {
    * Store value in memory address, useful for program loading
    */
   poke(address, value) {
-      console.log(address, value);
+    //   console.log(address, value);
 
     this.ram.write(address, value);
   }
@@ -112,8 +112,8 @@ class CPU {
 
 
     // Debugging output
-    console.log(`${this.reg.PC}: ${IR.toString(2)}`);
-    // console.log("see me");
+    // console.log(`${this.reg.PC}: ${IR.toString(2)}`);
+    
 
     // Get the two bytes in memory _after_ the PC in case the instruction
     // needs them.
@@ -127,7 +127,7 @@ class CPU {
 
     // !!! IMPLEMENT ME
     // this.alu(IR, operandA, operandB);
-    let advancePC = true;
+    let advancePC;
     
     // These are the fucntion handlers
     const handle_POP = register => {
@@ -144,14 +144,16 @@ class CPU {
     //     this.ram.write(this.reg[regA]) = this.reg[regB];
     // }
 
-    // const handle_CALL = register => {
-    //     handle_PUSH(this.ram.read(this.reg[this.reg.PC+2]));
-    //     this.reg.PC = this.reg[register];
-    // }
+    const handle_CALL = register => {
+       let addr = this.reg.PC + 1;
+       handle_PUSH(addr);
+       this.reg.PC = this.reg[register];
+    }
     
-    // const handle_RET = () => {
-    //     this.reg.PC = this.ram.read(this.SP);
-    // }
+    const handle_RET = () => {
+        this.reg.PC = this.ram.read(this.reg[SP]);
+        this.reg[SP]++;
+    }
 
     switch (IR) {
       case HLT:
@@ -174,10 +176,13 @@ class CPU {
     // case ST:
     //     handle_ST(operandA, operandB);
     //     break;
-    // case CALL:
-    //     advancePC = false;
-    //     handle_CALL(operandA);
-    //     break;
+    case CALL:
+        // advancePC = false;
+        handle_CALL(operandA);
+        break;
+    case RET:
+        handle_RET();
+        break;
     default:
         console.log('invalid instruction: ', IR);
         this.stopClock();

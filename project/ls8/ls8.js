@@ -15,25 +15,25 @@ function loadMemory() {
 
   readLines.on("line", line => {
     
-    cpu.poke(counter, parseInt(line, 2));
-    console.log('this is parseint: ', parseInt(line, 2));
-    console.log(parseInt('123foo'));
-
-    counter++;
-
-
-
-  });
+    // cpu.poke(counter, parseInt(line, 2));
+    // console.log('this is parseint: ', parseInt(line, 2));
+    // console.log(parseInt('123foo'));
+    let stringVar = line.split('#')[0].trim() ;
+    let parsing = parseInt(stringVar, 2);
+    if (!isNaN(parsing)) {
+      cpu.poke(counter++, parsing);
+  }
+    });
 
   readLines.on("close", line => {
     
     cpu.startClock();
 
-
-    
   });
 
  
+
+
 }
 
 /**
