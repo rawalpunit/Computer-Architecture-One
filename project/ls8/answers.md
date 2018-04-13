@@ -5,4 +5,4 @@ Assembly language is closer to human readable..as opposed to machine language..w
 
  A GPU basically has lots of cores to do some simple tasks in parallel. 3D rendering basically needs a lot of parallel processing...so each core renders one small part of the image. Comparatively a CPU has far lesser cores and hence doesn't do as well 3D rendering as a GPU.
 
- GPU use their many cores to do rendering on 3D images quite fast. ML is the same kind of 'embarassingly parallel' kind of problem..and hence GPUs lend themselves quite readily to optimise the solution to this problem.
+ GPU use their many cores to do rendering on 3D images quite fast. ML is the same kind of 'embarassingly parallel' kind of problem..and hence GPUs lend themselves quite readily to optimise this kind of parallel computation.
